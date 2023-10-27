@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+  <h1 class="title has-text-centered">Posts by {{ user.username }} ({{ posts.total }})</h1>
+  <div class="columns is-mobile is-multiline">
+    
+    <div class="column is-four-fifths">
+      
+      {% for post in posts.items %}
+        <div class="card">
+          <div class="card-content">
+            <div class="media">
+              <div class="media-left">
+                <figure class="image is-64x64">
+                  <img class="image is-rounded" src="{{ url_for('static', filename='img/' + post.author.image_file) }}">
+                </figure>
+              </div>
+              <div class="media-content">
+                <a href="{{ url_for('posts.post', post_id=post.id) }}">
+                  <p class="title is-4">{{ post.title }}</p>
+                </a>
+                <p class="subtitle is-6">By {{ post.author.username }}</p>
+              </div>
+            </div>
+
+            <div class="content">
+              {{ post.content }}
+              <br>
+              <time>{{ post.date_posted.strftime('%d/%m/%Y') }}</time>
+            </div>
+          </div>
+        </div> 
+      {% endfor %}
+
+      <nav class="pagination mt-3" role="navigation">
+        <ul class="pagination-list">
+          {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+            {% if page_num %}
+              {% if posts.page == page_num %}
+                <li>
+                  <a href="{{ url_for('users.user_posts', username=user.username, page=page_num) }}" class="pagination-link is-current">{{ page_num }}</a>
+                </li>
+              {% else %}
+                <li>
+                  <a href="{{ url_for('users.user_posts', username=user.username, page=page_num) }}" class="pagination-link">{{ page_num }}</a>
+                </li>
+              {% endif %}
+            {% else %}
+              ...
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </nav>
+
+    </div>
+    
+    <div class="column">
+      <h2 class="title is-3 has-text-centered">My Sidebar</h2>
+
+      <h4 class="subtitle">My content sidebar</h4>
+
+      <ul>
+        <li>Content link</li>
+        <li>Content link</li>
+        <li>Content link</li>
+        <li>Content link</li>
+      </ul>
+
+      <h4 class="subtitle">My content sidebar</h4>
+
+      <ul>
+        <li>Content link</li>
+        <li>Content link</li>
+        <li>Content link</li>
+        <li>Content link</li>
+      </ul>
+
+      <h4 class="subtitle">My content sidebar</h4>
+
+      <ul>
+        <li>Content link</li>
+        <li>Content link</li>
+        <li>Content link</li>
+        <li>Content link</li>
+      </ul>
+
+    </div>
+  
+  </div>
+
+</div>
+
+{% endblock %}

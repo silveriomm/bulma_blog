@@ -1,0 +1,99 @@
+{%  extends 'base.html' %}
+
+{% block content %}
+
+<div class="card-content">
+<div class="media">
+  <div class="media-left">
+    <img class="image is-96x96" src="{{ url_for('static', filename='img/' + post.author.image_file) }}">
+  </div>
+  <div class="media-content">
+    {% if post.author == current_user %}
+      <div>
+        <a href="{{ url_for('posts.update_post', post_id=post.id) }}" class="button is-warning is-small">
+          <i class="fi-xnsuxl-edit-solid mr-1"></i> Update
+        </a>
+        <button class="js-modal-trigger button is-danger is-small" data-target="modal-js-example">
+          <i class="fi-xnsuxl-trash-bin mr-1"></i> Delete
+        </button>
+      </div>
+    {% endif %}
+    <p class="title is-4">{{ post.title }}</p>
+    <p class="subtitle is-6">By {{ post.author.username }}</p>
+  <time>{{ post.date_posted.strftime('%d/%m/%Y') }}</time>
+  </div>
+</div>
+
+<div class="content">
+    <textarea class="textarea" rows="14">{{ post.content }}</textarea>
+</div>
+</div>
+
+<div id="modal-js-example" class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Confirmation!</p>
+    </header>
+    <section class="modal-card-body">
+      <strong>Do you really want to delete this post?</strong>
+    </section>
+    <footer class="modal-card-foot">
+      <form action="{{ url_for('posts.delete_post', post_id=post.id) }}" method="POST">
+        <button type="submit" class="button is-danger">
+          <i class="fi-xnsuxl-trash-bin mr-1"></i> Delete
+        </button>
+      </form>
+      <button class="button is-secondary ml-2">
+        <i class="fi-xnsuxl-times-solid"></i> Cancel
+      </button>
+    </footer>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Functions to open and close a modal
+  function openModal($el) {
+    $el.classList.add('is-active');
+  }
+
+  function closeModal($el) {
+    $el.classList.remove('is-active');
+  }
+
+  function closeAllModals() {
+    (document.querySelectorAll('.modal') || []).forEach(($modal) => {
+      closeModal($modal);
+    });
+  }
+
+  // Add a click event on buttons to open a specific modal
+  (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
+    const modal = $trigger.dataset.target;
+    const $target = document.getElementById(modal);
+
+    $trigger.addEventListener('click', () => {
+      openModal($target);
+    });
+  });
+
+  // Add a click event on various child elements to close the parent modal
+  (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
+    const $target = $close.closest('.modal');
+
+    $close.addEventListener('click', () => {
+      closeModal($target);
+    });
+  });
+
+  // Add a keyboard event to close all modals
+  document.addEventListener('keydown', (event) => {
+    if (event.code === 'Escape') {
+      closeAllModals();
+    }
+  });
+});
+</script>
+
+{% endblock %}

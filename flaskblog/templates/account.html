@@ -1,0 +1,93 @@
+
+{%  extends 'base.html' %}
+
+{% block content %}
+
+<div class="columns is-vcentered is-centered is-mobile">
+  <div class="column is-text-centered">
+    <figure class="image is-128x128">
+      <img src="{{ image_file }}">
+    </figure>
+  </div>
+  <div class="column">
+    <p class="title">
+      {{ current_user.username }}
+    </p>
+    <p class="subtitle">
+    {{ current_user.email }}
+    </p>
+    </div>
+  </div>
+
+<div class="column is-half mx-auto">
+  <h3 class="title is-3 has-text-centered">Account</h3>
+  <form method="POST", action="" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    
+    <div class="field">
+        {{ form.username.label(class="label") }}
+      <div class="control">
+        {% if form.username.errors %}
+          {{ form.username(class="input is-small is-invalid") }}
+          <small class="message is-danger">
+            {% for error in form.username.errors %}
+            {{ error }}
+            {% endfor %}
+          </small>
+        {% else %}
+          {{ form.username(class="input is-small") }}
+        {% endif %}
+      </div>
+    <div>
+      
+    <div class="field">
+        {{ form.email.label(class="label") }}
+      <div class="control">
+
+        {% if form.email.errors %}
+          {{ form.email(class="input is-small is-invalid") }}
+          <small class="message is-danger">
+            {% for error in form.email.errors %}
+            {{ error }}
+            {% endfor %}
+          </small>
+        {% else %}
+          {{ form.email(class="input is-small") }}
+        {% endif %}
+
+      </div>
+    <div>
+
+    <div class="field">
+      {{ form.picture.label(class="label") }}
+      <div class="control">
+        {{ form.picture(class="input is-small") }}
+        {% if form.picture.errors %}
+          <small class="message is-danger">
+          {% for error in form.picture.errors %}
+            {{ error }}
+          {% endfor %}
+          </small>
+        {% endif %}
+      </div>
+    </div>
+
+    <div>
+
+    <div class="field">
+      <button class="button is-primary">
+        <i class="fi-xwsuxl-reload mr-1"></i> Update
+      </button>
+    </div>
+
+  </form>
+
+</div>
+
+</div>
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,38 @@
+{%  extends 'base.html' %}
+
+{% block content %}
+
+<div class="column is-half mx-auto">
+  <h3 class="title is-3 has-text-centered">Reset Password</h3>
+  <form method="POST", action="">
+    {{ form.hidden_tag() }}
+    
+    <div class="field">
+        {{ form.email.label(class="label") }}
+      <div class="control">
+
+        {% if form.email.errors %}
+          {{ form.email(class="input is-small is-invalid") }}
+          <small class="message is-danger">
+            {% for error in form.email.errors %}
+            {{ error }}
+            {% endfor %}
+          </small>
+        {% else %}
+          {{ form.email(class="input is-small") }}
+        {% endif %}
+
+      </div>
+    <div>
+
+    <div class="field mt-2">
+      <div class="control">
+        {{ form.submit(class="button is-primary") }}
+      </div>
+    </div>
+
+  </form>
+
+</div>
+
+{% endblock %}
